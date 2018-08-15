@@ -81,7 +81,6 @@ class Swarm():
 			
 			#calculate the cost of a particle in current position
 			self.particle[i].cost = self.cost_function_pso(nn, self.particle[i])
-			print("Initialize Particle Cost: ",self.particle[i].cost)
 			
 			#update self best
 			self.particle[i].best_position = self.particle[i].position
@@ -95,13 +94,7 @@ class Swarm():
 	def pso_loop(self, nn, num_epoch, epoch, loss):
 		for i in range(self.maxIt):
 			epoch = np.append(epoch, num_epoch + i)
-			print("-------------------------------------------------")
-			print("Round No: ", i)
-			print("-------------------------------------------------")
 			for j in range(self.nPop):
-				print("*******************************")
-				print("Particle No: ", j)
-				print("*******************************")
 
 				#update velocity
 				self.particle[j].velocity = self.w * self.particle[j].velocity
@@ -115,10 +108,8 @@ class Swarm():
 				#update particle position
 				self.particle[j].position = self.particle[j].position + self.particle[j].velocity
 				
-				print("Old Cost: ", self.particle[j].cost)
 				#calculate new particle cost
 				self.particle[j].cost = self.cost_function_pso(nn, self.particle[j])
-				print("New Cost: ", self.particle[j].cost)
 				
 				#update particle best 
 				if self.particle[j].cost < self.particle[j].best_cost:
@@ -133,6 +124,6 @@ class Swarm():
 			self.all_global_best[i] = self.global_best_cost
 			self.w = self.w * self.wdamp
 			loss = np.append(loss, self.all_global_best[i])
-			print("Iteration Number: ", i+1, "Best Cost: ", self.all_global_best[i])
-		print(epoch.shape)
+			if (i+1)%100==0:
+				print("Iteration Number: ", i+1, "Best Cost: ", self.all_global_best[i])
 		return epoch, loss 
